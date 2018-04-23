@@ -53,6 +53,7 @@ export default {
   methods: {
     getDate() {
       this.date = getMonthDate(this.year, this.month)
+      console.log(this.date)
     },
     getWeekTodos(firstDay) {
       let day = moment.unix(firstDay.timestamp)

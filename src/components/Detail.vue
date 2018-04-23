@@ -12,8 +12,10 @@
         Note
       </p>
       <p class="sub-contain">
-        <a href="">Register</a>
-        <a href="">Final standings</a>
+        <template v-for="(note , index) in todo.notes">
+          <a v-if="note.type == 'href' " :href="note.href" :key="index">{{note.text}}</a>
+          <span v-if="note.type == 'text'" :key="index">{{note.text}}</span>
+        </template>  
       </p>
     </div>
   </transition>

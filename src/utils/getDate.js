@@ -12,7 +12,7 @@ const getMonthDate = (year, month) => {
   let res = []
   let cnt = 0
   let weekData = []
-  while (nowDay.month() < month || cnt != 0) {
+  while ((nowDay.month() < month && nowDay.year() == year) || cnt != 0 || nowDay.year() < year) {
     weekData.push({
       className: nowDay.month() === month - 1 ? '' : nowDay.month() === month - 2 ? 'pre-month' : 'next-month',
       date: nowDay.date(),

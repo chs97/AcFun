@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Month :month="month" @decMonth="decMonth" @incMonth="incMonth"/>
+    <p class="year">{{year}}</p>
     <Calendar :year="year" :month="month" :todos="todos" @dayClick="handleDayClick" @todoClick="handleTodoClick" />
   </div>
 </template>
@@ -7,13 +9,15 @@
 <script>
 import Calendar from './components/Calendar'
 import Detail from './components/Detail'
+import Month from './components/Month'
 import Vue from 'vue'
 import { getOffsetTop, getOffsetLeft } from './utils/getDate'
 import './style/global.less'
 export default {
   name: 'App',
   components: {
-    Calendar
+    Calendar,
+    Month
   },
   data() {
     return {
@@ -26,7 +30,15 @@ export default {
           start: 1524677700,
           end: 1524684900,
           title: 'Codeforces Round #47',
-          style: 'green'
+          style: 'green',
+          notes: [{
+            type: 'href',
+            href: 'http://codeforces.com/contests',
+            text: 'Register'
+          }, {
+            type: 'text',
+            text: 'Codeforces Round #476 (Div. 2)'
+          }]
         },
         {
           id: 2,
@@ -90,6 +102,22 @@ export default {
     )
   },
   methods: {
+    decMonth() {
+      if (this.month == 1) {
+        this.year = this.year - 1
+        this.month = 12
+      } else {
+        this.month = this.month - 1
+      }
+    },
+    incMonth() {
+      if (this.month == 12) {
+        this.year = this.year + 1
+        this.month = 1
+      } else {
+        this.month = this.month + 1
+      }
+    },
     dragStart(index, e) {
       console.log('start: ', index)
     },

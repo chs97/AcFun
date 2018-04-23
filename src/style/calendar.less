@@ -36,6 +36,7 @@
       width: 100%;
       height: 100%;
       .day {
+        user-select: none;
         box-sizing: border-box;
         width: 135px;
         border-left: 1px solid #e4e7ed;
@@ -60,7 +61,7 @@
     .todos {
       display: flex;
       padding-top: 40px;
-      min-height: 95px;
+      min-height: 75px;
       flex-direction: column;
       z-index: 2;
       margin-bottom: 20px;
@@ -156,6 +157,7 @@
     color: #31363a;
     margin-top: 15px;
     font-weight: bold;
+    margin-bottom: 5px;
   }
 }
 .fade-enter-active, .fade-leave-active {
