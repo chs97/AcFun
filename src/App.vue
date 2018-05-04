@@ -2,7 +2,7 @@
   <div id="app">
     <Month :month="month" @decMonth="decMonth" @incMonth="incMonth"/>
     <p class="year">{{year}}</p>
-    <Calendar :year="year" :month="month" :todos="todos" @dayClick="handleDayClick" @todoClick="handleTodoClick" />
+    <Calendar :year="year" :month="month" :todos="allTodo" @dayClick="handleDayClick" @todoClick="handleTodoClick" />
   </div>
 </template>
 
@@ -11,7 +11,8 @@ import Calendar from './components/Calendar'
 import Detail from './components/Detail'
 import Month from './components/Month'
 import Vue from 'vue'
-import { getOffsetTop, getOffsetLeft } from './utils/getDate'
+import { getOffsetTop, getOffsetLeft, firstOfToday } from './utils/getDate'
+import moment from 'moment'
 import './style/global.less'
 export default {
   name: 'App',
@@ -23,73 +24,33 @@ export default {
     return {
       year: 2018,
       month: 4,
-      arr: [11111, 22222, 33333, 44444, 5555],
-      todos: [
-        {
-          id: 1,
-          start: 1524677700,
-          end: 1524684900,
-          title: 'Codeforces Round #47',
-          style: 'green',
-          notes: [{
-            type: 'href',
-            href: 'http://codeforces.com/contests',
-            text: 'Register'
-          }, {
-            type: 'text',
-            text: 'Codeforces Round #476 (Div. 2)'
-          }]
-        },
-        {
-          id: 2,
-          start: 1524916800,
-          end: 1524923400,
-          title: 'AtCoder Grand Contes',
-          style: 'blue'
-        },
-        {
-          id: 3,
-          start: 1522884800,
-          end: 1522984800,
-          title: 'Hello world - 2',
-          style: 'yellow'
-        },
-        {
-          id: 4,
-          start: 1522684800,
-          end: 1522984800,
-          title: 'Hello world - 2',
-          style: 'red'
-        },
-        {
-          id: 5,
-          start: 1522598400,
-          end: 1522599800,
-          title: 'Hello world - 1',
-          style: 'yellow'
-        },
-        {
-          id: 6,
-          start: 1522598400,
-          end: 1522599800,
-          title: 'Hello world - 1',
-          style: 'blue'
-        },
-        {
-          id: 7,
-          start: 1522598400,
-          end: 1523167800,
-          title: 'Hello world - 1',
-          style: 'red'
-        }
-      ],
+      // arr: [11111, 22222, 33333, 44444, 5555],
+      todos: [],
       // todos: [],
       contests: [],
       detailDOM: null
     }
   },
+  computed: {
+    allTodo() {
+      return [].concat(this.todos, this.contests)
+    }
+  },
   mounted() {
     let self = this
+    const fileName = firstOfToday() + '.json'
+    const url = `	http://acfun-1251130357.cossh.myqcloud.com/${fileName}`
+    fetch(url).then(res => {
+      res.json().then(body => {
+        console.log(body)
+        self.contests = body
+      })
+    }).catch(err => {
+      console.log(err)
+    })
+    const now = moment()
+    this.year = now.year()
+    this.month = now.month() + 1
     // setTimeout(() => self.year ++, 1000)
     document.addEventListener(
       'click',
@@ -142,7 +103,7 @@ export default {
       this.detailDOM.left = left
     },
     handleTodoClick(id, $event) {
-      // console.log(id)
+      console.log(id)
       let left = getOffsetLeft($event.target) + $event.target.clientWidth
       let top = getOffsetTop($event.target)
       if (this.detailDOM === null) {
@@ -151,7 +112,7 @@ export default {
         this.detailDOM.displayDetail = true
       }
       this.changeDetailPosition(left, top)
-      let findTodoById = this.todos.filter(i => i.id === id)
+      let findTodoById = this.allTodo.filter(i => i.id == id)
       this.detailDOM.todo = findTodoById[0]
       $event.stopPropagation()
     }

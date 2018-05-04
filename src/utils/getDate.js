@@ -74,4 +74,8 @@ const getOffsetTop = (elm) => {
   return actualTop
 }
 
-export { getMonthDate, splitTodos, getOffsetLeft, getOffsetTop, prefixZero }
+const firstOfToday = () => {
+  return moment().subtract(1, 'days').startOf('day').unix()
+}
+
+export { getMonthDate, splitTodos, getOffsetLeft, getOffsetTop, prefixZero, firstOfToday }

@@ -16,7 +16,7 @@
           <template v-for="(todo, index) in todos">
             <div class="padding" v-for="i in (index == 0 ? todos[0].start : todos[index].start - todos[index - 1].end - 1 )" :key="index + i.toString()"></div>  
             <div @click="handleTodoClick(todo.id, $event)" class="todo" :class="computedClass(todo)" :style="{width: computedWidth(todo) - 10 + 'px'}" :key="index">
-              {{todo.title}} {{todo.len}} {{todo.id}}
+              {{todo.title}}
             </div>
           </template>
         </div>
@@ -72,7 +72,6 @@ export default {
           style: item.style
         }
       }).sort((a, b) => a.start - b.start)
-      
       return splitTodos(thisWeekTodos)
     },
     computedClass(todo) {
